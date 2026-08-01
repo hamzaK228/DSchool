@@ -31,6 +31,7 @@ export interface Announcement {
   class_id: string;
   title: string;
   body: string;
+  image_url: string | null;
   created_at: string;
 }
 

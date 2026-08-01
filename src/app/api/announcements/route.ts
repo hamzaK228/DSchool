@@ -36,6 +36,46 @@ export async function POST(request: NextRequest) {
   const { data: profile } = await adminClient.from("profiles").select("class_id").eq("id", user.id).single();
   if (!profile?.class_id) return NextResponse.json({ error: "No class" }, { status: 404 });
 
+  const contentType = request.headers.get("content-type") || "";
+
+  if (contentType.includes("multipart/form-data")) {
+    // Form data with optional image
+    const formData = await request.formData();
+    const title = formData.get("title") as string;
+    const body = formData.get("body") as string;
+    const image = formData.get("image") as File | null;
+
+    if (!title || !body) {
+      return NextResponse.json({ error: "Title and body are required" }, { status: 400 });
+    }
+
+    let imageUrl: string | null = null;
+
+    if (image && image.size > 0) {
+      const fileName = `announcements/${profile.class_id}/${Date.now()}-${image.name}`;
+      const arrayBuffer = await image.arrayBuffer();
+      const { error: uploadError } = await adminClient.storage
+        .from("School")
+        .upload(fileName, arrayBuffer, { contentType: image.type, upsert: false });
+
+      if (!uploadError) {
+        const { data: urlData } = adminClient.storage.from("School").getPublicUrl(fileName);
+        imageUrl = urlData.publicUrl;
+      }
+    }
+
+    const { error } = await adminClient.from("announcements").insert({
+      class_id: profile.class_id,
+      title,
+      body,
+      image_url: imageUrl,
+    });
+    if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+
+    return NextResponse.json({ success: true });
+  }
+
+  // JSON fallback
   const body = await request.json();
   const { error } = await adminClient.from("announcements").insert({ class_id: profile.class_id, ...body });
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });

@@ -36,9 +36,12 @@ export default function StudentAnnouncements() {
         ) : (
           <div className="space-y-3">
             {announcements.map((ann) => (
-              <div key={ann.id} className="bg-white border border-border rounded-2xl p-5">
+              <div key={ann.id} className="bg-white border border-border rounded-2xl p-5 overflow-hidden">
                 <h3 className="font-medium text-ink">{ann.title}</h3>
                 <p className="text-sm text-ink/60 mt-1 whitespace-pre-wrap">{ann.body}</p>
+                {ann.image_url && (
+                  <img src={ann.image_url} alt={ann.title} className="mt-3 rounded-xl max-h-80 object-cover border border-border w-full" />
+                )}
                 <p className="text-xs text-ink/30 mt-3">{new Date(ann.created_at).toLocaleString()}</p>
               </div>
             ))}
