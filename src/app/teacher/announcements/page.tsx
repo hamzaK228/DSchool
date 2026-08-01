@@ -11,6 +11,7 @@ export default function TeacherAnnouncements() {
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ title: "", body: "" });
   const [image, setImage] = useState<File | null>(null);
+  const [views, setViews] = useState<Record<string, number>>({});
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -20,6 +21,16 @@ export default function TeacherAnnouncements() {
     if (res.ok) {
       const data = await res.json();
       setAnnouncements(data);
+      // Load view counts for read receipts
+      const vRes = await fetch("/api/announcement-views");
+      if (vRes.ok) {
+        const vData = await vRes.json();
+        const counts: Record<string, number> = {};
+        (vData || []).forEach((v: any) => {
+          counts[v.announcement_id] = (counts[v.announcement_id] || 0) + 1;
+        });
+        setViews(counts);
+      }
     }
     setLoading(false);
   };
@@ -122,7 +133,12 @@ export default function TeacherAnnouncements() {
                     {ann.image_url && (
                       <img src={ann.image_url} alt={ann.title} className="mt-3 rounded-xl max-h-64 object-cover border border-border" />
                     )}
-                    <p className="text-xs text-ink/30 mt-3">{new Date(ann.created_at).toLocaleString()}</p>
+                    <div className="flex items-center gap-3 mt-3">
+                      <p className="text-xs text-ink/30">{new Date(ann.created_at).toLocaleString()}</p>
+                      {(views[ann.id] || 0) > 0 && (
+                        <span className="text-xs text-accent-blue-light font-medium">👁 {views[ann.id]} viewed</span>
+                      )}
+                    </div>
                   </div>
                   <button onClick={() => handleDelete(ann.id)} className="text-xs text-ink/20 hover:text-accent-red transition-colors flex-shrink-0">Delete</button>
                 </div>

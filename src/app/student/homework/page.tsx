@@ -116,14 +116,19 @@ export default function StudentHomework() {
               const sub = submissions[hw.id];
               const isExpanded = selectedHw?.id === hw.id;
               return (
-                <div key={hw.id} className="bg-white border border-border rounded-2xl overflow-hidden transition-all">
+                <div key={hw.id} className={`bg-white border border-border rounded-2xl overflow-hidden card-hover animate-fade-in-up`}>
                   <div className="p-5">
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
                         <h3 className="font-medium text-ink">{hw.title}</h3>
                         {hw.description && <p className="text-sm text-ink/50 mt-1 whitespace-pre-wrap">{hw.description}</p>}
-                        <div className="flex items-center gap-4 mt-3 text-xs text-ink/30">
-                          {hw.due_date && <span>Due: {new Date(hw.due_date).toLocaleDateString()}</span>}
+                        <div className="flex items-center gap-4 mt-3 text-xs">
+                          {hw.due_date && (() => {
+                            const daysLeft = Math.ceil((new Date(hw.due_date).getTime() - Date.now()) / 86400000);
+                            const badge = daysLeft < 0 ? "badge-due" : daysLeft <= 2 ? "badge-upcoming" : "badge-safe";
+                            const text = daysLeft < 0 ? `Overdue by ${Math.abs(daysLeft)}d` : daysLeft === 0 ? "Due today!" : `Due in ${daysLeft}d`;
+                            return <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${badge}`}>{text}</span>;
+                          })()}
                           {sub && <span className="text-accent-green font-medium">✓ Submitted{sub.grade && ` · Grade: ${sub.grade}`}</span>}
                         </div>
                       </div>

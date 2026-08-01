@@ -14,6 +14,10 @@ export default function StudentAnnouncements() {
       if (res.ok) {
         const data = await res.json();
         setAnnouncements(data || []);
+        // Auto-track views for read receipts
+        (data || []).forEach((a: any) => {
+          fetch("/api/announcement-views", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ announcement_id: a.id }) }).catch(() => {});
+        });
       }
       setLoading(false);
     };
@@ -36,7 +40,7 @@ export default function StudentAnnouncements() {
         ) : (
           <div className="space-y-3">
             {announcements.map((ann) => (
-              <div key={ann.id} className="bg-white border border-border rounded-2xl p-5 overflow-hidden">
+              <div key={ann.id} className="bg-white border border-border rounded-2xl p-5 overflow-hidden card-hover animate-fade-in-up">
                 <h3 className="font-medium text-ink">{ann.title}</h3>
                 <p className="text-sm text-ink/60 mt-1 whitespace-pre-wrap">{ann.body}</p>
                 {ann.image_url && (
