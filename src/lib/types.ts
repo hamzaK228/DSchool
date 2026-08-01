@@ -23,6 +23,7 @@ export interface Homework {
   description: string | null;
   due_date: string | null;
   attachment_url: string | null;
+  visible_from: string | null;
   created_at: string;
 }
 
