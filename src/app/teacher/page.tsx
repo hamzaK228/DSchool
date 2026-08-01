@@ -118,6 +118,18 @@ export default function TeacherDashboard() {
               >
                 Messages
               </Link>
+              <Link
+                href="/teacher/exams"
+                className="px-3 py-1.5 text-sm text-ink/60 hover:text-ink hover:bg-warm-50 rounded-lg transition-colors"
+              >
+                Exams
+              </Link>
+              <Link
+                href="/teacher/attendance"
+                className="px-3 py-1.5 text-sm text-ink/60 hover:text-ink hover:bg-warm-50 rounded-lg transition-colors"
+              >
+                Attendance
+              </Link>
             </nav>
             <button
               onClick={handleLogout}
@@ -229,6 +241,27 @@ export default function TeacherDashboard() {
             <p className="text-2xl mb-1">💬</p>
             <p className="text-sm font-medium text-ink/80">Messages</p>
           </Link>
+          <Link
+            href="/teacher/exams"
+            className="bg-white border border-border rounded-xl p-4 hover:border-warm-400 hover:shadow-sm transition-all"
+          >
+            <p className="text-2xl mb-1">📝</p>
+            <p className="text-sm font-medium text-ink/80">Exams</p>
+          </Link>
+          <Link
+            href="/teacher/attendance"
+            className="bg-white border border-border rounded-xl p-4 hover:border-warm-400 hover:shadow-sm transition-all"
+          >
+            <p className="text-2xl mb-1">📋</p>
+            <p className="text-sm font-medium text-ink/80">Attendance</p>
+          </Link>
+          <a
+            href="/api/export-roster"
+            className="bg-white border border-border rounded-xl p-4 hover:border-warm-400 hover:shadow-sm transition-all"
+          >
+            <p className="text-2xl mb-1">📥</p>
+            <p className="text-sm font-medium text-ink/80">Export Roster</p>
+          </a>
         </section>
       </main>
 

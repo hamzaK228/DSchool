@@ -80,6 +80,9 @@ export default function StudentDashboard() {
               <Link href="/student/announcements" className="px-3 py-1.5 text-sm text-ink/60 hover:text-ink hover:bg-warm-50 rounded-lg transition-colors">Announcements</Link>
               <Link href="/student/surveys" className="px-3 py-1.5 text-sm text-ink/60 hover:text-ink hover:bg-warm-50 rounded-lg transition-colors">Surveys</Link>
               <Link href="/student/messages" className="px-3 py-1.5 text-sm text-ink/60 hover:text-ink hover:bg-warm-50 rounded-lg transition-colors">Messages</Link>
+              <Link href="/student/exams" className="px-3 py-1.5 text-sm text-ink/60 hover:text-ink hover:bg-warm-50 rounded-lg transition-colors">Exams</Link>
+              <Link href="/student/attendance" className="px-3 py-1.5 text-sm text-ink/60 hover:text-ink hover:bg-warm-50 rounded-lg transition-colors">Attendance</Link>
+              <Link href="/student/grades" className="px-3 py-1.5 text-sm text-ink/60 hover:text-ink hover:bg-warm-50 rounded-lg transition-colors">Grades</Link>
             </nav>
             <button onClick={handleLogout} className="text-sm text-ink/40 hover:text-accent-red transition-colors">Sign Out</button>
           </div>
@@ -130,6 +133,9 @@ export default function StudentDashboard() {
           <Link href="/student/announcements" className="bg-white border border-border rounded-xl p-4 hover:border-warm-400 hover:shadow-sm transition-all"><p className="text-2xl mb-1">📢</p><p className="text-sm font-medium text-ink/80">Announcements</p></Link>
           <Link href="/student/surveys" className="bg-white border border-border rounded-xl p-4 hover:border-warm-400 hover:shadow-sm transition-all"><p className="text-2xl mb-1">📊</p><p className="text-sm font-medium text-ink/80">Surveys</p></Link>
           <Link href="/student/messages" className="bg-white border border-border rounded-xl p-4 hover:border-warm-400 hover:shadow-sm transition-all"><p className="text-2xl mb-1">💬</p><p className="text-sm font-medium text-ink/80">Messages</p></Link>
+          <Link href="/student/exams" className="bg-white border border-border rounded-xl p-4 hover:border-warm-400 hover:shadow-sm transition-all"><p className="text-2xl mb-1">📝</p><p className="text-sm font-medium text-ink/80">Exams</p></Link>
+          <Link href="/student/attendance" className="bg-white border border-border rounded-xl p-4 hover:border-warm-400 hover:shadow-sm transition-all"><p className="text-2xl mb-1">📋</p><p className="text-sm font-medium text-ink/80">Attendance</p></Link>
+          <Link href="/student/grades" className="bg-white border border-border rounded-xl p-4 hover:border-warm-400 hover:shadow-sm transition-all"><p className="text-2xl mb-1">🏆</p><p className="text-sm font-medium text-ink/80">Grades</p></Link>
         </section>
       </main>
 
