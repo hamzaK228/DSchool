@@ -74,38 +74,28 @@ export default function TeacherDashboard() {
 
   return (
     <div className="min-h-screen bg-paper">
-      <header className="bg-[#1e1e1e] text-white sticky top-0 z-50">
+      <header className="border-b border-gray-100 bg-white sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
-          <Link href="/teacher" className="flex items-center gap-3">
-            <svg viewBox="0 0 40 40" className="w-9 h-9 logo-mark">
-              <circle cx="20" cy="20" r="18" fill="none" stroke="#A51C30" strokeWidth="1.5" />
-              <circle cx="20" cy="20" r="12" fill="none" stroke="#A51C30" strokeWidth="1" />
-              <line x1="20" y1="2" x2="20" y2="10" stroke="#A51C30" strokeWidth="1.5" />
-              <line x1="20" y1="30" x2="20" y2="38" stroke="#A51C30" strokeWidth="1.5" />
-              <line x1="2" y1="20" x2="10" y2="20" stroke="#A51C30" strokeWidth="1.5" />
-              <line x1="30" y1="20" x2="38" y2="20" stroke="#A51C30" strokeWidth="1.5" />
-            </svg>
-            <div>
-              <p className="text-xs font-semibold tracking-wide text-[#A51C30]">Mister Deniz</p>
-              <p className="text-[9px] text-gray-400 tracking-widest uppercase">edu-portal</p>
-            </div>
+          <Link href="/teacher" className="flex flex-col leading-none">
+            <span className="text-lg font-bold text-black tracking-tight">Mister Deniz</span>
+            <span className="text-xs text-gray-400 tracking-[0.3em] uppercase">edu-portal</span>
           </Link>
           {classData && (
-            <p className="hidden md:block text-xs text-gray-400">
+            <p className="hidden md:block text-xs text-gray-500">
               {classData.name} · Join code:{" "}
-              <code className="font-mono text-[#A51C30] bg-[#2d2d2d] px-1.5 py-0.5 rounded">{classData.join_code}</code>
+              <code className="font-mono text-black font-semibold bg-gray-100 px-1.5 py-0.5 rounded">{classData.join_code}</code>
             </p>
           )}
           <div className="flex items-center gap-6">
-            <nav className="hidden md:flex items-center gap-6 text-xs tracking-wide">
-              <Link href="/teacher/homework" className="text-gray-300 hover:text-white transition-colors">Homework</Link>
-              <Link href="/teacher/announcements" className="text-gray-300 hover:text-white transition-colors">Announcements</Link>
-              <Link href="/teacher/surveys" className="text-gray-300 hover:text-white transition-colors">Surveys</Link>
-              <Link href="/teacher/messages" className="text-gray-300 hover:text-white transition-colors">Messages</Link>
-              <Link href="/teacher/exams" className="text-gray-300 hover:text-white transition-colors">Exams</Link>
-              <Link href="/teacher/attendance" className="text-gray-300 hover:text-white transition-colors">Attendance</Link>
+            <nav className="hidden md:flex items-center gap-6 text-xs font-medium text-gray-600">
+              <Link href="/teacher/homework" className="hover:text-black transition-colors">Homework</Link>
+              <Link href="/teacher/announcements" className="hover:text-black transition-colors">Announcements</Link>
+              <Link href="/teacher/surveys" className="hover:text-black transition-colors">Surveys</Link>
+              <Link href="/teacher/messages" className="hover:text-black transition-colors">Messages</Link>
+              <Link href="/teacher/exams" className="hover:text-black transition-colors">Exams</Link>
+              <Link href="/teacher/attendance" className="hover:text-black transition-colors">Attendance</Link>
             </nav>
-            <button onClick={handleLogout} className="text-xs text-gray-400 hover:text-white transition-colors">Sign Out</button>
+            <button onClick={handleLogout} className="text-xs text-gray-400 hover:text-black transition-colors">Sign Out</button>
           </div>
         </div>
       </header>
@@ -234,11 +224,11 @@ export default function TeacherDashboard() {
         </section>
       </main>
 
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#1e1e1e] border-t border-gray-700 px-4 py-2 flex items-center justify-around z-50">
-        <Link href="/teacher/homework" className="flex flex-col items-center gap-0.5 text-[9px] text-gray-400 hover:text-[#A51C30] transition-colors py-1"><span className="text-sm">📝</span>Homework</Link>
-        <Link href="/teacher/announcements" className="flex flex-col items-center gap-0.5 text-[9px] text-gray-400 hover:text-[#A51C30] transition-colors py-1"><span className="text-sm">📢</span>Announce</Link>
-        <Link href="/teacher/surveys" className="flex flex-col items-center gap-0.5 text-[9px] text-gray-400 hover:text-[#A51C30] transition-colors py-1"><span className="text-sm">📊</span>Surveys</Link>
-        <Link href="/teacher/messages" className="flex flex-col items-center gap-0.5 text-[9px] text-gray-400 hover:text-[#A51C30] transition-colors py-1"><span className="text-sm">💬</span>Msg</Link>
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2 flex items-center justify-around z-50">
+        <Link href="/teacher/homework" className="flex flex-col items-center gap-0.5 text-[9px] text-gray-500 hover:text-black transition-colors py-1"><span className="text-sm">📝</span>Homework</Link>
+        <Link href="/teacher/announcements" className="flex flex-col items-center gap-0.5 text-[9px] text-gray-500 hover:text-black transition-colors py-1"><span className="text-sm">📢</span>Announce</Link>
+        <Link href="/teacher/surveys" className="flex flex-col items-center gap-0.5 text-[9px] text-gray-500 hover:text-black transition-colors py-1"><span className="text-sm">📊</span>Surveys</Link>
+        <Link href="/teacher/messages" className="flex flex-col items-center gap-0.5 text-[9px] text-gray-500 hover:text-black transition-colors py-1"><span className="text-sm">💬</span>Msg</Link>
       </nav>
     </div>
   );
