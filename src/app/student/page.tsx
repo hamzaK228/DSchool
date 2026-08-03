@@ -66,25 +66,34 @@ export default function StudentDashboard() {
 
   return (
     <div className="min-h-screen bg-paper">
-      <header className="border-b border-border bg-white/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div>
-            <Link href="/student" className="font-display text-xl text-ink hover:text-warm-600 transition-colors">
-              Hi, {profile?.full_name?.split(" ")[0]}
-            </Link>
-            {classData && <p className="text-xs text-ink/40 mt-0.5">{classData.name}</p>}
-          </div>
-          <div className="flex items-center gap-4">
-            <nav className="hidden sm:flex items-center gap-1">
-              <Link href="/student/homework" className="px-3 py-1.5 text-sm text-ink/60 hover:text-ink hover:bg-warm-50 rounded-lg transition-colors">Homework</Link>
-              <Link href="/student/announcements" className="px-3 py-1.5 text-sm text-ink/60 hover:text-ink hover:bg-warm-50 rounded-lg transition-colors">Announcements</Link>
-              <Link href="/student/surveys" className="px-3 py-1.5 text-sm text-ink/60 hover:text-ink hover:bg-warm-50 rounded-lg transition-colors">Surveys</Link>
-              <Link href="/student/messages" className="px-3 py-1.5 text-sm text-ink/60 hover:text-ink hover:bg-warm-50 rounded-lg transition-colors">Messages</Link>
-              <Link href="/student/exams" className="px-3 py-1.5 text-sm text-ink/60 hover:text-ink hover:bg-warm-50 rounded-lg transition-colors">Exams</Link>
-              <Link href="/student/attendance" className="px-3 py-1.5 text-sm text-ink/60 hover:text-ink hover:bg-warm-50 rounded-lg transition-colors">Attendance</Link>
-              <Link href="/student/grades" className="px-3 py-1.5 text-sm text-ink/60 hover:text-ink hover:bg-warm-50 rounded-lg transition-colors">Grades</Link>
+      <header className="bg-[#1e1e1e] text-white sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
+          <Link href="/student" className="flex items-center gap-3">
+            <svg viewBox="0 0 40 40" className="w-9 h-9 logo-mark">
+              <circle cx="20" cy="20" r="18" fill="none" stroke="#A51C30" strokeWidth="1.5" />
+              <circle cx="20" cy="20" r="12" fill="none" stroke="#A51C30" strokeWidth="1" />
+              <line x1="20" y1="2" x2="20" y2="10" stroke="#A51C30" strokeWidth="1.5" />
+              <line x1="20" y1="30" x2="20" y2="38" stroke="#A51C30" strokeWidth="1.5" />
+              <line x1="2" y1="20" x2="10" y2="20" stroke="#A51C30" strokeWidth="1.5" />
+              <line x1="30" y1="20" x2="38" y2="20" stroke="#A51C30" strokeWidth="1.5" />
+            </svg>
+            <div>
+              <p className="text-xs font-semibold tracking-wide text-[#A51C30]">Mister Deniz</p>
+              <p className="text-[9px] text-gray-400 tracking-widest uppercase">edu-portal</p>
+            </div>
+          </Link>
+          <span className="hidden md:block text-xs text-gray-400">Hi, {profile?.full_name?.split(" ")[0]} · {classData?.name}</span>
+          <div className="flex items-center gap-6">
+            <nav className="hidden md:flex items-center gap-6 text-xs tracking-wide">
+              <Link href="/student/homework" className="text-gray-300 hover:text-white transition-colors">Homework</Link>
+              <Link href="/student/announcements" className="text-gray-300 hover:text-white transition-colors">Announcements</Link>
+              <Link href="/student/surveys" className="text-gray-300 hover:text-white transition-colors">Surveys</Link>
+              <Link href="/student/messages" className="text-gray-300 hover:text-white transition-colors">Messages</Link>
+              <Link href="/student/exams" className="text-gray-300 hover:text-white transition-colors">Exams</Link>
+              <Link href="/student/attendance" className="text-gray-300 hover:text-white transition-colors">Attendance</Link>
+              <Link href="/student/grades" className="text-gray-300 hover:text-white transition-colors">Grades</Link>
             </nav>
-            <button onClick={handleLogout} className="text-sm text-ink/40 hover:text-accent-red transition-colors">Sign Out</button>
+            <button onClick={handleLogout} className="text-xs text-gray-400 hover:text-white transition-colors">Sign Out</button>
           </div>
         </div>
       </header>
@@ -139,11 +148,11 @@ export default function StudentDashboard() {
         </section>
       </main>
 
-      <nav className="sm:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-border px-4 py-2 flex items-center justify-around z-50">
-        <Link href="/student/homework" className="flex flex-col items-center gap-0.5 text-xs text-ink/40 hover:text-warm-600 transition-colors py-1"><span>📝</span> Homework</Link>
-        <Link href="/student/announcements" className="flex flex-col items-center gap-0.5 text-xs text-ink/40 hover:text-warm-600 transition-colors py-1"><span>📢</span> Announce</Link>
-        <Link href="/student/surveys" className="flex flex-col items-center gap-0.5 text-xs text-ink/40 hover:text-warm-600 transition-colors py-1"><span>📊</span> Surveys</Link>
-        <Link href="/student/messages" className="flex flex-col items-center gap-0.5 text-xs text-ink/40 hover:text-warm-600 transition-colors py-1"><span>💬</span> Messages</Link>
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-[#1e1e1e] border-t border-gray-700 px-4 py-2 flex items-center justify-around z-50">
+        <Link href="/student/homework" className="flex flex-col items-center gap-0.5 text-[9px] text-gray-400 hover:text-[#A51C30] transition-colors py-1"><span className="text-sm">📝</span>HW</Link>
+        <Link href="/student/announcements" className="flex flex-col items-center gap-0.5 text-[9px] text-gray-400 hover:text-[#A51C30] transition-colors py-1"><span className="text-sm">📢</span>News</Link>
+        <Link href="/student/surveys" className="flex flex-col items-center gap-0.5 text-[9px] text-gray-400 hover:text-[#A51C30] transition-colors py-1"><span className="text-sm">📊</span>Survey</Link>
+        <Link href="/student/messages" className="flex flex-col items-center gap-0.5 text-[9px] text-gray-400 hover:text-[#A51C30] transition-colors py-1"><span className="text-sm">💬</span>Msg</Link>
       </nav>
     </div>
   );
