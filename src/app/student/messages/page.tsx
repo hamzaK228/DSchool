@@ -23,7 +23,9 @@ export default function StudentMessages() {
   const [myUserId, setMyUserId] = useState<string>("");
   const [teacherId, setTeacherId] = useState<string | null>(null);
   const [teacherName, setTeacherName] = useState<string>("Teacher");
+  const [file, setFile] = useState<File | null>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = () => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -75,17 +77,24 @@ export default function StudentMessages() {
 
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!body.trim() || !teacherId || sending) return;
+    if ((!body.trim() && !file) || !teacherId || sending) return;
 
     setSending(true);
-    await fetch("/api/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        receiver_id: teacherId,
-        body: body.trim(),
-      }),
-    });
+
+    if (file) {
+      const fd = new FormData();
+      fd.append("receiver_id", teacherId);
+      fd.append("body", body.trim());
+      fd.append("file", file);
+      await fetch("/api/messages", { method: "POST", body: fd });
+      setFile(null);
+    } else {
+      await fetch("/api/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ receiver_id: teacherId, body: body.trim() }),
+      });
+    }
     setBody("");
     setSending(false);
     loadMessages();
@@ -194,22 +203,44 @@ export default function StudentMessages() {
         {/* Input */}
         <form
           onSubmit={sendMessage}
-          className="py-4 border-t border-border flex gap-2 sticky bottom-0 bg-paper shrink-0"
+          className="py-4 border-t border-border flex flex-col gap-2 sticky bottom-0 bg-paper shrink-0"
         >
-          <input
-            type="text"
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            placeholder={`Message ${teacherName}...`}
-            className="flex-1 px-4 py-2.5 bg-white border border-border rounded-xl text-sm outline-none focus:border-warm-400 transition-colors"
-          />
-          <button
-            type="submit"
-            disabled={!body.trim() || sending}
-            className="px-5 py-2.5 bg-ink text-paper text-sm font-medium rounded-xl hover:bg-ink/90 transition-colors disabled:opacity-50"
-          >
-            {sending ? "..." : "Send"}
-          </button>
+          {file && (
+            <div className="flex items-center gap-2 text-xs text-warm-600">
+              <span>📎 {file.name}</span>
+              <button type="button" onClick={() => setFile(null)} className="text-accent-red">&times;</button>
+            </div>
+          )}
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              placeholder={`Message ${teacherName}...`}
+              className="flex-1 px-4 py-2.5 bg-white border border-border rounded-xl text-sm outline-none focus:border-warm-400 transition-colors"
+            />
+            <input
+              ref={fileInputRef}
+              type="file"
+              className="hidden"
+              onChange={(e) => setFile(e.target.files?.[0] || null)}
+            />
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="px-3 py-2.5 border border-border rounded-xl text-sm hover:bg-warm-50 transition-colors"
+              title="Attach file"
+            >
+              📎
+            </button>
+            <button
+              type="submit"
+              disabled={(!body.trim() && !file) || sending}
+              className="px-5 py-2.5 bg-ink text-paper text-sm font-medium rounded-xl hover:bg-ink/90 transition-colors disabled:opacity-50"
+            >
+              {sending ? "..." : "Send"}
+            </button>
+          </div>
         </form>
       </main>
     </div>

@@ -78,6 +78,60 @@ export async function POST(request: NextRequest) {
   if (!profile?.class_id)
     return NextResponse.json({ error: "No class" }, { status: 404 });
 
+  const contentType = request.headers.get("content-type") || "";
+
+  // Handle file/photo upload in messages
+  if (contentType.includes("multipart/form-data")) {
+    const formData = await request.formData();
+    const receiver_id = formData.get("receiver_id") as string;
+    const messageBody = (formData.get("body") as string)?.trim() || null;
+    const file = formData.get("file") as File | null;
+
+    if (!receiver_id) {
+      return NextResponse.json({ error: "receiver_id is required" }, { status: 400 });
+    }
+
+    if (!messageBody && !file) {
+      return NextResponse.json({ error: "body or file is required" }, { status: 400 });
+    }
+
+    let fileUrl: string | null = null;
+    if (file && file.size > 0) {
+      const fileName = `messages/${profile.class_id}/${Date.now()}-${file.name}`;
+      const arrBuf = await file.arrayBuffer();
+      const { error: upErr } = await adminClient.storage
+        .from("School")
+        .upload(fileName, arrBuf, { contentType: file.type, upsert: false });
+      if (!upErr) {
+        const { data: urlData } = adminClient.storage.from("School").getPublicUrl(fileName);
+        fileUrl = urlData.publicUrl;
+      }
+    }
+
+    const { data: inserted, error } = await adminClient
+      .from("messages")
+      .insert({
+        class_id: profile.class_id,
+        sender_id: user.id,
+        receiver_id,
+        body: messageBody || "",
+        file_url: fileUrl,
+      })
+      .select("*")
+      .single();
+
+    if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+
+    // Get sender name
+    const { data: sender } = await adminClient.from("profiles").select("full_name").eq("id", user.id).single();
+
+    return NextResponse.json({
+      success: true,
+      message: { ...inserted, sender_name: sender?.full_name || "You", receiver_name: "" },
+    });
+  }
+
+  // JSON text message
   const body = await request.json();
   const { receiver_id, body: messageBody } = body;
 
@@ -93,11 +147,10 @@ export async function POST(request: NextRequest) {
       receiver_id,
       body: messageBody.trim(),
     })
-    .select("*, profiles!messages_sender_id_fkey(full_name)")
+    .select("*")
     .single();
 
-  if (error)
-    return NextResponse.json({ error: error.message }, { status: 400 });
+  if (error) return NextResponse.json({ error: error.message }, { status: 400 });
 
   return NextResponse.json({ success: true, message: inserted });
 }

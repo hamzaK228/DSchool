@@ -53,6 +53,10 @@ export default function TeacherExams() {
   const [pendingUploadQuestionId, setPendingUploadQuestionId] = useState<string | null>(null);
   const [gradingSubId, setGradingSubId] = useState<string | null>(null);
   const [gradedSubmissions, setGradedSubmissions] = useState<Record<string, any>>({});
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [showAi, setShowAi] = useState(false);
+  const [aiPrompt, setAiPrompt] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
 
   const load = async () => {
     const [eRes, sRes] = await Promise.all([
@@ -171,18 +175,20 @@ export default function TeacherExams() {
     }
 
     setSubmitting(true);
+    const method = editingId ? "PUT" : "POST";
+    const body: any = {
+      title: form.title,
+      questions,
+      time_limit_minutes: form.time_limit_minutes ? parseInt(form.time_limit_minutes) : null,
+      visible_from: form.visible_from || new Date().toISOString(),
+      closes_at: form.closes_at || null,
+    };
+    if (editingId) body.id = editingId;
+
     const r = await fetch("/api/exams", {
-      method: "POST",
+      method,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: form.title,
-        questions,
-        time_limit_minutes: form.time_limit_minutes
-          ? parseInt(form.time_limit_minutes)
-          : null,
-        visible_from: form.visible_from || new Date().toISOString(),
-        closes_at: form.closes_at || null,
-      }),
+      body: JSON.stringify(body),
     });
     if (!r.ok) {
       setError((await r.json()).error || "Failed");
@@ -190,11 +196,58 @@ export default function TeacherExams() {
       return;
     }
     idCounter = 1;
+    resetForm();
+    setSubmitting(false);
+    load();
+  };
+
+  const resetForm = () => {
     setForm({ title: "", time_limit_minutes: "", visible_from: "", closes_at: "" });
     setQuestions([emptyQuestion()]);
     setShowForm(false);
-    setSubmitting(false);
-    load();
+    setEditingId(null);
+    setShowAi(false);
+    setAiPrompt("");
+  };
+
+  const handleEdit = async (examId: string) => {
+    const exam = exams.find((e) => e.id === examId);
+    if (!exam) return;
+    setForm({
+      title: exam.title || "",
+      time_limit_minutes: exam.time_limit_minutes?.toString() || "",
+      visible_from: exam.visible_from ? exam.visible_from.slice(0, 16) : "",
+      closes_at: exam.closes_at ? exam.closes_at.slice(0, 16) : "",
+    });
+    const qs = Array.isArray(exam.questions) ? exam.questions : [];
+    if (qs.length > 0) {
+      setQuestions(qs.map((q: any) => ({ ...q, id: q.id || nextId() })));
+    } else {
+      setQuestions([emptyQuestion()]);
+    }
+    setEditingId(exam.id);
+    setShowForm(true);
+    setShowAi(false);
+  };
+
+  const handleAiAssist = async () => {
+    if (!aiPrompt.trim()) return;
+    setAiLoading(true);
+    try {
+      const res = await fetch("/api/ai-assist", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "exam", prompt: aiPrompt }) });
+      if (res.ok) {
+        const data = await res.json();
+        setForm((prev) => ({
+          ...prev,
+          title: data.title || prev.title,
+          time_limit_minutes: data.time_limit_minutes?.toString() || "",
+        }));
+        if (data.questions && Array.isArray(data.questions)) {
+          setQuestions(data.questions.map((q: any) => ({ ...q, id: (q.id || nextId()) })));
+        }
+      }
+    } catch {}
+    setAiLoading(false);
   };
 
   const handleDelete = async (id: string) => {
@@ -225,7 +278,7 @@ export default function TeacherExams() {
             </Link>
             <h1 className="font-display text-2xl text-ink mt-1">Exams</h1>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             {viewingResults && (
               <button
                 onClick={() => setViewingResults(null)}
@@ -234,6 +287,7 @@ export default function TeacherExams() {
                 All Exams
               </button>
             )}
+            <button onClick={() => { setShowAi(!showAi); if (!showAi) { setShowForm(false); resetForm(); } }} className="px-3 py-2 text-xs font-medium border border-warm-400 text-warm-600 rounded-xl hover:bg-warm-50 transition-colors">{showAi ? "Cancel AI" : "🤖 AI"}</button>
             <button
               onClick={() => {
                 setShowForm(!showForm);
@@ -248,6 +302,14 @@ export default function TeacherExams() {
       </header>
 
       <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+        {showAi && (
+          <div className="bg-white border border-warm-200 rounded-2xl p-5 space-y-3 animate-fade-in-up">
+            <h3 className="text-sm font-semibold text-warm-700">🤖 AI Exam Generator</h3>
+            <textarea value={aiPrompt} onChange={(e) => setAiPrompt(e.target.value)} rows={2} className="w-full px-3 py-2 border border-border rounded-xl text-sm outline-none focus:border-warm-400 resize-none" placeholder="e.g. Create a 5-question quiz about World War II for 10th grade history" />
+            <button onClick={handleAiAssist} disabled={aiLoading || !aiPrompt.trim()} className="px-4 py-2 bg-warm-500 text-white text-xs font-medium rounded-xl hover:bg-warm-600 transition-colors disabled:opacity-50">{aiLoading ? "Generating..." : "Generate Exam"}</button>
+          </div>
+        )}
+
         {showForm && (
           <form
             onSubmit={handleSubmit}
@@ -500,13 +562,10 @@ export default function TeacherExams() {
                 {error}
               </p>
             )}
-            <button
-              type="submit"
-              disabled={submitting}
-              className="w-full py-2.5 bg-ink text-paper font-medium rounded-xl hover:bg-ink/90 transition-colors disabled:opacity-50"
-            >
-              {submitting ? "Creating..." : "Create Exam"}
-            </button>
+            <div className="flex gap-2">
+              <button type="submit" disabled={submitting} className="flex-1 py-2.5 bg-ink text-paper font-medium rounded-xl hover:bg-ink/90 transition-colors disabled:opacity-50">{submitting ? "Saving..." : editingId ? "Update Exam" : "Create Exam"}</button>
+              {editingId && <button type="button" onClick={resetForm} className="px-4 py-2.5 border border-border text-ink/60 rounded-xl text-sm">Cancel</button>}
+            </div>
           </form>
         )}
 
@@ -722,6 +781,7 @@ export default function TeacherExams() {
                           ? `View Results (${subs.length})`
                           : "No results yet"}
                       </button>
+                      <button onClick={() => handleEdit(ex.id)} className="text-xs text-warm-600 hover:underline pr-2">Edit</button>
                       <button
                         onClick={() => handleDelete(ex.id)}
                         className="text-xs text-ink/20 hover:text-accent-red transition-colors"
