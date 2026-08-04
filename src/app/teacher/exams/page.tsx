@@ -288,7 +288,7 @@ export default function TeacherExams() {
                 All Exams
               </button>
             )}
-            <button onClick={() => { setShowAi(!showAi); if (!showAi) { setShowForm(false); resetForm(); } }} className="px-3 py-2 text-xs font-medium border border-warm-400 text-warm-600 rounded-xl hover:bg-warm-50 transition-colors">{showAi ? "Cancel AI" : "🤖 AI"}</button>
+            <button onClick={() => { if (showAi) { setShowAi(false); } else { setShowAi(true); setShowForm(false); } }} className="px-3 py-2 text-xs font-medium border border-warm-400 text-warm-600 rounded-xl hover:bg-warm-50 transition-colors">{showAi ? "Cancel AI" : "🤖 AI"}</button>
             <button
               onClick={() => {
                 setShowForm(!showForm);

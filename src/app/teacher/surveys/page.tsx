@@ -91,7 +91,7 @@ export default function TeacherSurveys() {
           <div><Link href="/teacher" className="text-sm text-warm-400 hover:text-warm-600 transition-colors">&larr; Dashboard</Link><h1 className="font-display text-2xl text-ink mt-1">Surveys</h1></div>
           <div className="flex gap-2 flex-wrap">
             <button onClick={() => { setShowResults(!showResults); setShowForm(false); setShowAi(false); }} className={`px-4 py-2 text-sm font-medium rounded-xl transition-colors ${showResults ? "bg-warm-200 text-warm-800" : "bg-white border border-border text-ink/60 hover:bg-warm-50"}`}>{showResults ? "All surveys" : "Results"}</button>
-            <button onClick={() => { setShowAi(!showAi); if (!showAi) setShowForm(false); resetForm(); }} className="px-3 py-2 text-xs font-medium border border-warm-400 text-warm-600 rounded-xl hover:bg-warm-50 transition-colors">{showAi ? "Cancel AI" : "🤖 AI"}</button>
+            <button onClick={() => { if (showAi) { setShowAi(false); } else { setShowAi(true); setShowForm(false); } }} className="px-3 py-2 text-xs font-medium border border-warm-400 text-warm-600 rounded-xl hover:bg-warm-50 transition-colors">{showAi ? "Cancel AI" : "🤖 AI"}</button>
             <button onClick={() => { if (editingId) resetForm(); else setShowForm(!showForm); setShowAi(false); }} className="px-4 py-2 bg-ink text-paper text-sm font-medium rounded-xl hover:bg-ink/90 transition-colors">{showForm ? "Cancel" : "+ New"}</button>
           </div>
         </div>
