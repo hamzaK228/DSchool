@@ -55,12 +55,12 @@ export default function TeacherAttendance() {
   return (
     <div className="min-h-screen bg-paper">
       <header className="border-b border-border bg-white/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-3xl mx-auto px-6 py-4">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
           <Link href="/teacher" className="text-sm text-warm-400 hover:text-warm-600">&larr; Dashboard</Link>
           <div className="flex items-center justify-between mt-1"><h1 className="font-display text-2xl text-ink">Attendance</h1></div>
         </div>
       </header>
-      <main className="max-w-3xl mx-auto px-6 py-8">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         <div className="mb-6 flex items-center gap-4">
           <input type="date" value={date} onChange={e => setDate(e.target.value)} className="px-4 py-2.5 border border-border rounded-xl bg-white outline-none focus:border-warm-400" />
           <div className="flex gap-3 text-sm">

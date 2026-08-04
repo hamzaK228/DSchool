@@ -29,12 +29,12 @@ export default function StudentAnnouncements() {
   return (
     <div className="min-h-screen bg-paper">
       <header className="border-b border-border bg-white/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-3xl mx-auto px-6 py-4">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
           <Link href="/student" className="text-sm text-warm-400 hover:text-warm-600 transition-colors">&larr; Dashboard</Link>
           <h1 className="font-display text-2xl text-ink mt-1">Announcements</h1>
         </div>
       </header>
-      <main className="max-w-3xl mx-auto px-6 py-8">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         {announcements.length === 0 ? (
           <div className="text-center py-20"><p className="text-ink/30 text-lg">No announcements yet.</p></div>
         ) : (

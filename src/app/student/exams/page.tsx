@@ -481,7 +481,7 @@ export default function StudentExams() {
   return (
     <div className="min-h-screen bg-paper">
       <header className="border-b border-border bg-white/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-3xl mx-auto px-6 py-4">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
           <Link
             href="/student"
             className="text-sm text-warm-400 hover:text-warm-600 transition-colors"
@@ -491,7 +491,7 @@ export default function StudentExams() {
           <h1 className="font-display text-2xl text-ink mt-1">Exams</h1>
         </div>
       </header>
-      <main className="max-w-3xl mx-auto px-6 py-8 space-y-4">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-4">
         {error && (
           <p className="text-accent-red text-sm bg-accent-red/5 px-4 py-2.5 rounded-lg">
             {error}
@@ -558,9 +558,9 @@ export default function StudentExams() {
                 key={ex.id}
                 className="bg-white border border-border rounded-2xl overflow-hidden"
               >
-                <div className="p-5">
-                  <div className="flex items-start justify-between">
-                    <div>
+                <div className="p-4 sm:p-5">
+                  <div className="flex flex-col sm:flex-row items-start justify-between gap-3">
+                    <div className="w-full sm:w-auto">
                       <h3 className="font-medium text-ink">{ex.title}</h3>
                       <p className="text-xs text-ink/30 mt-1">
                         {questions.length} questions ({typeLabel})
@@ -586,7 +586,7 @@ export default function StudentExams() {
                           setActiveExam(ex.id);
                           setConfirmStart(true);
                         }}
-                        className="px-4 py-2 bg-ink text-paper text-sm rounded-xl hover:bg-ink/90 transition-colors"
+                        className="px-4 py-2 bg-ink text-paper text-sm rounded-xl hover:bg-ink/90 transition-colors w-full sm:w-auto text-center"
                       >
                         Start
                       </button>

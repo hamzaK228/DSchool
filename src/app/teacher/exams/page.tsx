@@ -215,7 +215,7 @@ export default function TeacherExams() {
   return (
     <div className="min-h-screen bg-paper">
       <header className="border-b border-border bg-white/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div>
             <Link
               href="/teacher"
@@ -247,7 +247,7 @@ export default function TeacherExams() {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-6 py-8 space-y-6">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-6">
         {showForm && (
           <form
             onSubmit={handleSubmit}
@@ -275,7 +275,7 @@ export default function TeacherExams() {
               />
             </div>
 
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
                 <label className="block text-sm font-medium text-ink/70 mb-1.5">
                   Time (min)

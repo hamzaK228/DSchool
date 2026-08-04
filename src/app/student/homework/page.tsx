@@ -104,12 +104,12 @@ export default function StudentHomework() {
   return (
     <div className="min-h-screen bg-paper">
       <header className="border-b border-border bg-white/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-3xl mx-auto px-6 py-4">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4">
           <Link href="/student" className="text-sm text-warm-400 hover:text-warm-600 transition-colors">&larr; Dashboard</Link>
           <h1 className="font-display text-2xl text-ink mt-1">Homework</h1>
         </div>
       </header>
-      <main className="max-w-3xl mx-auto px-6 py-8 space-y-6">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-6">
         {homeworkList.length === 0 ? (<div className="text-center py-20"><p className="text-ink/30 text-lg">No homework assigned yet.</p></div>) : (
           <div className="space-y-3">
             {homeworkList.map((hw) => {
@@ -118,7 +118,7 @@ export default function StudentHomework() {
               return (
                 <div key={hw.id} className={`bg-white border border-border rounded-2xl overflow-hidden card-hover animate-fade-in-up`}>
                   <div className="p-5">
-                    <div className="flex items-start justify-between gap-4">
+                    <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
                       <div className="flex-1 min-w-0">
                         <h3 className="font-medium text-ink">{hw.title}</h3>
                         {hw.description && <p className="text-sm text-ink/50 mt-1 whitespace-pre-wrap">{hw.description}</p>}

@@ -101,7 +101,7 @@ export default function StudentMessages() {
   return (
     <div className="min-h-screen bg-paper flex flex-col">
       <header className="border-b border-border bg-white/50 backdrop-blur-sm sticky top-0 z-50 shrink-0">
-        <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <div>
             <Link
               href="/student"
@@ -127,7 +127,7 @@ export default function StudentMessages() {
         </div>
       </header>
 
-      <main className="flex-1 flex flex-col max-w-3xl mx-auto w-full px-4 min-h-0">
+      <main className="flex-1 flex flex-col max-w-5xl mx-auto w-full px-4 min-h-0">
         {/* Messages */}
         <div className="flex-1 overflow-y-auto py-4 space-y-3">
           {messages.length === 0 ? (

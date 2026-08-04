@@ -81,7 +81,7 @@ export default function TeacherAnnouncements() {
   return (
     <div className="min-h-screen bg-paper">
       <header className="border-b border-border bg-white/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <div>
             <Link href="/teacher" className="text-sm text-warm-400 hover:text-warm-600 transition-colors">&larr; Dashboard</Link>
             <h1 className="font-display text-2xl text-ink mt-1">Announcements</h1>
@@ -92,7 +92,7 @@ export default function TeacherAnnouncements() {
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-6 py-8 space-y-6">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-6">
         {showForm && (
           <form onSubmit={handleSubmit} className="bg-white border border-border rounded-2xl p-6 space-y-4 animate-fade-in-up">
             <div>

@@ -90,7 +90,7 @@ export default function TeacherSurveys() {
   return (
     <div className="min-h-screen bg-paper">
       <header className="border-b border-border bg-white/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <div>
             <Link
               href="/teacher"
@@ -127,7 +127,7 @@ export default function TeacherSurveys() {
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-6 py-8 space-y-6">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 space-y-6">
         {showForm && (
           <form
             onSubmit={handleSubmit}

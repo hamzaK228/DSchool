@@ -23,9 +23,9 @@ export default function StudentAttendance() {
   return (
     <div className="min-h-screen bg-paper">
       <header className="border-b border-border bg-white/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-3xl mx-auto px-6 py-4"><Link href="/student" className="text-sm text-warm-400">&larr; Dashboard</Link><h1 className="font-display text-2xl text-ink mt-1">My Attendance</h1></div>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4"><Link href="/student" className="text-sm text-warm-400">&larr; Dashboard</Link><h1 className="font-display text-2xl text-ink mt-1">My Attendance</h1></div>
       </header>
-      <main className="max-w-3xl mx-auto px-6 py-8">
+      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         <div className="flex gap-4 mb-6 text-sm">
           <span className="text-accent-green">✓ Present: {present}</span>
           <span className="text-accent-red">✗ Absent: {absent}</span>
