@@ -4,8 +4,8 @@ import "./globals.css";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "School Portal",
-  description: "A simple school portal for teachers and students.",
+  title: "Mister Deniz | edu-portal",
+  description: "Your complete classroom companion - homework, announcements, surveys, and messages.",
 };
 
 export default function RootLayout({
@@ -15,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-paper text-ink antialiased">
+      <body className="min-h-screen bg-paper text-ink antialiased parchment-grain">
         {children}
       </body>
     </html>

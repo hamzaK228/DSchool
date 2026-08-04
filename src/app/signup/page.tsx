@@ -4,6 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { signupSchema } from "@/lib/validations";
+import PortalHeader from "@/components/PortalHeader";
+import Marquee from "@/components/Marquee";
+import PortalFooter from "@/components/PortalFooter";
 
 export default function SignupPage() {
   const supabase = createClient();
@@ -16,75 +19,151 @@ export default function SignupPage() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); setError("");
+    e.preventDefault();
+    setError("");
     const result = signupSchema.safeParse(form);
-    if (!result.success) { setError(result.error.issues[0].message); return; }
+    if (!result.success) {
+      setError(result.error.issues[0].message);
+      return;
+    }
     setLoading(true);
 
-    const res = await fetch("/api/student-signup", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form) });
+    const res = await fetch("/api/student-signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form)
+    });
     const data = await res.json();
-    if (!res.ok) { setError(data.error || "Signup failed"); setLoading(false); return; }
+    if (!res.ok) {
+      setError(data.error || "Signup failed");
+      setLoading(false);
+      return;
+    }
 
-    const { error: signInError } = await supabase.auth.signInWithPassword({ email: form.email, password: form.password });
-    if (signInError) { setError("Account created! Please sign in at /login."); setLoading(false); return; }
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email: form.email,
+      password: form.password
+    });
+    if (signInError) {
+      setError("Account created! Please sign in at /login.");
+      setLoading(false);
+      return;
+    }
     window.location.href = "/student";
   };
 
   return (
-    <main className="min-h-screen bg-white flex flex-col">
-      <header className="border-b border-gray-100 bg-white">
-        <div className="max-w-6xl mx-auto px-8 py-4 flex items-center justify-between">
-          <Link href="/" className="flex flex-col leading-none">
-            <span className="text-xl font-bold text-black tracking-tight">Mister Deniz</span>
-            <span className="text-sm text-gray-400 tracking-[0.3em] uppercase">edu-portal</span>
-          </Link>
-          <nav className="flex items-center gap-6 text-sm font-medium text-gray-600">
-            <Link href="/" className="hover:text-black">Main Page</Link>
-            <Link href="/login" className="hover:text-black">SIGN IN</Link>
-          </nav>
-        </div>
-      </header>
+    <main className="min-h-screen bg-paper flex flex-col justify-between">
+      {/* Brand Header */}
+      <PortalHeader />
 
-      <section className="flex-1 flex items-center justify-center py-12 px-6">
-        <div className="w-full max-w-md">
-          <h1 className="text-2xl font-bold text-black mb-1">JOIN A CLASS</h1>
-          <p className="text-sm text-gray-500 mb-8">Enter your details and the Class Join Code from Mr. Deniz.</p>
+      {/* Marquee Ticker */}
+      <Marquee text="Currently @ Intellect Pro School" />
+
+      {/* Signup Form Container - styled exactly to PDF Page 3 */}
+      <section className="flex-1 flex items-center justify-center py-16 px-6">
+        <div className="w-full max-w-[440px] bg-paper-light border border-border/80 p-8 md:p-10 rounded-2xl shadow-lg relative overflow-hidden animate-scale-in">
+          
+          {/* Subtle gold line on top of card */}
+          <div className="absolute top-0 left-0 right-0 h-1.5 bg-primary" />
+          
+          <h1 className="text-3xl font-display text-ink font-semibold tracking-wide text-center mb-1">
+            JOIN A CLASS
+          </h1>
+          <p className="text-xs font-serif-body italic text-ink-light text-center mb-8">
+            Enter your details and the Class Join Code from Mr. Deniz.
+          </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Full Name</label>
-              <input name="full_name" type="text" value={form.full_name} onChange={handleChange}
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-black placeholder:text-gray-400 focus:border-black focus:ring-1 focus:ring-black outline-none" placeholder="Your full name" required />
+              <label className="block text-[11px] font-bold text-ink-light uppercase tracking-wider mb-1.5 font-sans">
+                Full Name
+              </label>
+              <input
+                name="full_name"
+                type="text"
+                value={form.full_name}
+                onChange={handleChange}
+                className="w-full px-4 py-3 bg-white border border-border rounded-xl text-ink placeholder:text-ink-light/35 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors font-sans text-sm shadow-inner"
+                placeholder="Your full name"
+                required
+              />
             </div>
+            
             <div>
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Email</label>
-              <input name="email" type="email" value={form.email} onChange={handleChange}
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-black placeholder:text-gray-400 focus:border-black focus:ring-1 focus:ring-black outline-none" placeholder="you@example.com" required />
+              <label className="block text-[11px] font-bold text-ink-light uppercase tracking-wider mb-1.5 font-sans">
+                Email
+              </label>
+              <input
+                name="email"
+                type="email"
+                value={form.email}
+                onChange={handleChange}
+                className="w-full px-4 py-3 bg-white border border-border rounded-xl text-ink placeholder:text-ink-light/35 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors font-sans text-sm shadow-inner"
+                placeholder="you@example.com"
+                required
+              />
             </div>
+
             <div>
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Password</label>
-              <input name="password" type="password" value={form.password} onChange={handleChange}
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-black placeholder:text-gray-400 focus:border-black focus:ring-1 focus:ring-black outline-none" placeholder="Min 6 characters" required />
+              <label className="block text-[11px] font-bold text-ink-light uppercase tracking-wider mb-1.5 font-sans">
+                Password
+              </label>
+              <input
+                name="password"
+                type="password"
+                value={form.password}
+                onChange={handleChange}
+                className="w-full px-4 py-3 bg-white border border-border rounded-xl text-ink placeholder:text-ink-light/35 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors font-sans text-sm shadow-inner"
+                placeholder="Min 6 characters"
+                required
+              />
             </div>
+
             <div>
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Class Join Code</label>
-              <input name="join_code" type="text" value={form.join_code} onChange={handleChange}
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-black placeholder:text-gray-400 focus:border-black focus:ring-1 focus:ring-black outline-none font-mono" placeholder="e.g. ABC123" required />
-              <p className="text-xs text-gray-400 mt-1.5">Ask your teacher for this code.</p>
+              <label className="block text-[11px] font-bold text-ink-light uppercase tracking-wider mb-1.5 font-sans">
+                Class Join Code
+              </label>
+              <input
+                name="join_code"
+                type="text"
+                value={form.join_code}
+                onChange={handleChange}
+                className="w-full px-4 py-3 bg-white border border-border rounded-xl text-ink placeholder:text-ink-light/35 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors font-mono text-sm shadow-inner uppercase font-semibold"
+                placeholder="e.g. ABC123"
+                required
+              />
+              <p className="text-[10px] text-ink-light/60 mt-1 font-sans">
+                Ask your teacher for this code.
+              </p>
             </div>
-            {error && <p className="text-red-500 text-sm bg-red-50 px-4 py-2.5 rounded-lg">{error}</p>}
-            <button type="submit" disabled={loading}
-              className="w-full py-3.5 bg-black text-white font-semibold rounded-lg hover:bg-gray-800 disabled:opacity-50">
+
+            {error && (
+              <p className="text-primary text-xs font-semibold bg-primary/5 border border-primary/10 px-4 py-3 rounded-xl animate-fade-in">
+                ⚠️ {error}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-3.5 bg-primary text-white font-bold rounded-xl hover:bg-primary-dark transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 text-sm font-sans uppercase tracking-wider btn-press mt-4"
+            >
               {loading ? "Creating account..." : "Sign Up"}
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-gray-500">
+          <p className="mt-6 text-center text-xs text-ink-light font-sans">
             Already have an account?{" "}
-            <Link href="/login" className="text-black font-semibold hover:underline">SIGN IN</Link>
+            <Link href="/login" className="text-primary font-bold hover:underline tracking-wide">
+              SIGN IN
+            </Link>
           </p>
         </div>
       </section>
+
+      {/* Brand Footer */}
+      <PortalFooter />
     </main>
   );
 }

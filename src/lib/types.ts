@@ -53,6 +53,50 @@ export interface SurveyResponse {
   created_at: string;
 }
 
+// --- Exam Types ---
+
+export type QuestionType = "multiple_choice" | "essay";
+
+export interface ExamQuestion {
+  id: string;          // unique client-generated id for keying
+  type: QuestionType;
+  text: string;
+  image_url: string | null;
+  options: string[];   // only for multiple_choice
+  correct: number;     // index of correct option (0-based), only for multiple_choice
+  points: number;      // points for this question
+}
+
+export interface Exam {
+  id: string;
+  class_id: string;
+  title: string;
+  questions: ExamQuestion[];
+  time_limit_minutes: number | null;
+  visible_from: string;
+  closes_at: string | null;
+  created_at: string;
+}
+
+export interface ExamSubmissionAnswer {
+  question_index: number;
+  selected: number | null;  // for multiple_choice
+  text: string | null;      // for essay
+}
+
+export interface ExamSubmission {
+  id: string;
+  exam_id: string;
+  student_id: string;
+  answers: ExamSubmissionAnswer[];
+  score: number;
+  total: number;
+  submitted_at: string;
+  profiles?: { full_name: string };
+}
+
+// ---
+
 export type SubmissionType = "photo" | "text";
 export type AiCheckLabel = "low" | "medium" | "high";
 

@@ -16,18 +16,15 @@ export default function Logo({ light = true, className = "", href = "/" }: LogoP
       className={`flex items-center gap-3.5 select-none leading-none group ${className}`}
     >
       {/* Nautilus Shell Icon */}
-      <div className="relative flex-shrink-0">
+      <div className="relative flex-shrink-0 group">
         <svg
           viewBox="0 0 100 100"
-          className="w-9 h-9"
+          className="w-9 h-9 transition-transform duration-500 ease-out group-hover:rotate-[12deg]"
           fill="none"
           stroke={textColor}
           strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
-          style={{ transition: "transform 0.5s ease" }}
-          onMouseEnter={(e) => (e.currentTarget.style.transform = "rotate(12deg)")}
-          onMouseLeave={(e) => (e.currentTarget.style.transform = "rotate(0deg)")}
         >
           {/* Outer circle (C-shape: bottom-right quarter removed, 270° arc) */}
           <path d="M 50 86 A 36 36 0 1 1 86 50" />
@@ -66,7 +63,7 @@ export default function Logo({ light = true, className = "", href = "/" }: LogoP
         <span
           className="text-lg md:text-xl font-semibold tracking-wide leading-[1.1]"
           style={{
-            fontFamily: '"Poppins", system-ui, -apple-system, sans-serif',
+            fontFamily: '"Lexend", sans-serif',
             color: textColor,
           }}
         >
@@ -75,7 +72,7 @@ export default function Logo({ light = true, className = "", href = "/" }: LogoP
         <span
           className="text-xs md:text-sm tracking-[0.15em] font-light leading-[1.1]"
           style={{
-            fontFamily: '"Poppins", system-ui, -apple-system, sans-serif',
+            fontFamily: '"Lexend", sans-serif',
             color: subColor,
           }}
         >

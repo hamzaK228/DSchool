@@ -65,85 +65,213 @@ export default function StudentDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-paper">
-      <header className="border-b border-gray-100 bg-white sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
-          <Link href="/student" className="flex flex-col leading-none">
-            <span className="text-lg font-bold text-black tracking-tight">Mister Deniz</span>
-            <span className="text-xs text-gray-400 tracking-[0.3em] uppercase">edu-portal</span>
-          </Link>
-          <span className="hidden md:block text-xs text-gray-500">Hi, {profile?.full_name?.split(" ")[0]} · {classData?.name}</span>
-          <div className="flex items-center gap-6">
-            <nav className="hidden md:flex items-center gap-6 text-xs font-medium text-gray-600">
-              <Link href="/student/homework" className="hover:text-black transition-colors">Homework</Link>
-              <Link href="/student/announcements" className="hover:text-black transition-colors">Announcements</Link>
-              <Link href="/student/surveys" className="hover:text-black transition-colors">Surveys</Link>
-              <Link href="/student/messages" className="hover:text-black transition-colors">Messages</Link>
-              <Link href="/student/exams" className="hover:text-black transition-colors">Exams</Link>
-              <Link href="/student/attendance" className="hover:text-black transition-colors">Attendance</Link>
-              <Link href="/student/grades" className="hover:text-black transition-colors">Grades</Link>
-            </nav>
-            <button onClick={handleLogout} className="text-xs text-gray-400 hover:text-black transition-colors">Sign Out</button>
+    <>
+      <main className="max-w-6xl w-full mx-auto px-6 py-10 space-y-10 animate-fade-in">
+        
+        {/* Editorial Page Header */}
+        <section className="border-b border-border pb-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+          <div>
+            <span className="text-[11px] font-bold text-primary tracking-widest uppercase font-sans">
+              Student Cabinet
+            </span>
+            <h1 className="text-3xl md:text-5xl font-display text-ink mt-1 font-medium">
+              My Studies
+            </h1>
+            {classData && (
+              <p className="font-serif-body italic text-sm text-ink-light mt-1.5">
+                Classroom: <strong className="font-semibold text-primary">{classData.name}</strong> · Registered student
+              </p>
+            )}
           </div>
+          
+          <div className="flex items-center gap-3">
+            <span className="text-xs font-serif-body italic text-ink-light bg-paper-light border border-border px-3 py-1.5 rounded-lg shadow-sm">
+              Welcome, {profile?.full_name || "Student"}
+            </span>
+          </div>
+        </section>
+
+        {/* Dashboard Grid */}
+        <div className="grid gap-8 md:grid-cols-2">
+          {/* Recent Homework Card */}
+          <section className="bg-paper-light border border-border rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between mb-6 border-b border-border pb-3">
+                <h2 className="font-display text-lg text-ink font-semibold flex items-center gap-2">
+                  <span className="text-primary">✦</span> Recent Homework
+                </h2>
+                <Link
+                  href="/student/homework"
+                  className="text-xs font-bold text-primary hover:text-primary-dark tracking-wide uppercase transition-colors"
+                >
+                  View All &rarr;
+                </Link>
+              </div>
+
+              {recentHomework.length === 0 ? (
+                <p className="text-ink-light/50 text-xs font-serif-body italic py-8 text-center">
+                  No homework assignments published yet. You are all caught up!
+                </p>
+              ) : (
+                <ul className="divide-y divide-border/60 max-h-[280px] overflow-y-auto pr-1">
+                  {recentHomework.map((hw) => (
+                    <li key={hw.id} className="py-3 hover:bg-paper-dark/25 px-2 rounded-xl transition-colors">
+                      <Link href="/student/homework" className="block group">
+                        <div className="flex justify-between items-start gap-4">
+                          <p className="text-sm font-semibold text-ink group-hover:text-primary transition-colors">
+                            {hw.title}
+                          </p>
+                          <span className="text-[10px] font-bold text-primary tracking-widest uppercase border border-primary/20 px-2 py-0.5 rounded">
+                            Open
+                          </span>
+                        </div>
+                        {hw.due_date && (
+                          <p className="text-[11px] text-ink-light/60 font-mono mt-1 flex items-center gap-1">
+                            <span>📅 Due:</span>
+                            <span className="font-semibold text-primary">{new Date(hw.due_date).toLocaleDateString()}</span>
+                          </p>
+                        )}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </section>
+
+          {/* Announcements Card */}
+          <section className="bg-paper-light border border-border rounded-2xl p-6 shadow-sm flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between mb-6 border-b border-border pb-3">
+                <h2 className="font-display text-lg text-ink font-semibold flex items-center gap-2">
+                  <span className="text-primary">✦</span> Announcements
+                </h2>
+                <Link
+                  href="/student/announcements"
+                  className="text-xs font-bold text-primary hover:text-primary-dark tracking-wide uppercase transition-colors"
+                >
+                  View All &rarr;
+                </Link>
+              </div>
+
+              {recentAnnouncements.length === 0 ? (
+                <p className="text-ink-light/50 text-xs font-serif-body italic py-8 text-center">
+                  No classroom announcements posted recently.
+                </p>
+              ) : (
+                <ul className="divide-y divide-border/60 max-h-[280px] overflow-y-auto pr-1">
+                  {recentAnnouncements.map((ann) => (
+                    <li key={ann.id} className="py-3.5 hover:bg-paper-dark/25 px-2 rounded-xl transition-colors">
+                      <Link href="/student/announcements" className="block group">
+                        <p className="text-sm font-semibold text-ink group-hover:text-primary transition-colors">
+                          {ann.title}
+                        </p>
+                        <p className="text-xs text-ink-light/75 font-serif-body mt-1 line-clamp-2 leading-relaxed">
+                          {ann.body}
+                        </p>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </section>
+
+          {/* Quick Actions Grid */}
+          <section className="md:col-span-2 space-y-4">
+            <h2 className="font-display text-lg text-ink font-semibold border-b border-border pb-2.5">
+              Cabinet Services
+            </h2>
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
+              <Link
+                href="/student/homework"
+                className="bg-paper-light border border-border rounded-xl p-4 hover:border-primary/30 transition-all duration-300 card-hover flex flex-col items-center text-center group"
+              >
+                <div className="w-9 h-9 rounded-full bg-primary/5 flex items-center justify-center text-base mb-2.5 border border-primary/10 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                  📝
+                </div>
+                <p className="text-[10px] font-bold text-ink/80 tracking-wide uppercase font-sans">Homework</p>
+              </Link>
+              
+              <Link
+                href="/student/announcements"
+                className="bg-paper-light border border-border rounded-xl p-4 hover:border-primary/30 transition-all duration-300 card-hover flex flex-col items-center text-center group"
+              >
+                <div className="w-9 h-9 rounded-full bg-primary/5 flex items-center justify-center text-base mb-2.5 border border-primary/10 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                  📢
+                </div>
+                <p className="text-[10px] font-bold text-ink/80 tracking-wide uppercase font-sans">News</p>
+              </Link>
+              
+              <Link
+                href="/student/surveys"
+                className="bg-paper-light border border-border rounded-xl p-4 hover:border-primary/30 transition-all duration-300 card-hover flex flex-col items-center text-center group"
+              >
+                <div className="w-9 h-9 rounded-full bg-primary/5 flex items-center justify-center text-base mb-2.5 border border-primary/10 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                  📊
+                </div>
+                <p className="text-[10px] font-bold text-ink/80 tracking-wide uppercase font-sans">Surveys</p>
+              </Link>
+              
+              <Link
+                href="/student/messages"
+                className="bg-paper-light border border-border rounded-xl p-4 hover:border-primary/30 transition-all duration-300 card-hover flex flex-col items-center text-center group"
+              >
+                <div className="w-9 h-9 rounded-full bg-primary/5 flex items-center justify-center text-base mb-2.5 border border-primary/10 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                  💬
+                </div>
+                <p className="text-[10px] font-bold text-ink/80 tracking-wide uppercase font-sans">Messages</p>
+              </Link>
+              
+              <Link
+                href="/student/exams"
+                className="bg-paper-light border border-border rounded-xl p-4 hover:border-primary/30 transition-all duration-300 card-hover flex flex-col items-center text-center group"
+              >
+                <div className="w-9 h-9 rounded-full bg-primary/5 flex items-center justify-center text-base mb-2.5 border border-primary/10 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                  ✏️
+                </div>
+                <p className="text-[10px] font-bold text-ink/80 tracking-wide uppercase font-sans">Exams</p>
+              </Link>
+              
+              <Link
+                href="/student/attendance"
+                className="bg-paper-light border border-border rounded-xl p-4 hover:border-primary/30 transition-all duration-300 card-hover flex flex-col items-center text-center group"
+              >
+                <div className="w-9 h-9 rounded-full bg-primary/5 flex items-center justify-center text-base mb-2.5 border border-primary/10 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                  📋
+                </div>
+                <p className="text-[10px] font-bold text-ink/80 tracking-wide uppercase font-sans">Attendance</p>
+              </Link>
+
+              <Link
+                href="/student/grades"
+                className="bg-paper-light border border-border rounded-xl p-4 hover:border-primary/30 transition-all duration-300 card-hover flex flex-col items-center text-center group"
+              >
+                <div className="w-9 h-9 rounded-full bg-primary/5 flex items-center justify-center text-base mb-2.5 border border-primary/10 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+                  🏆
+                </div>
+                <p className="text-[10px] font-bold text-ink/80 tracking-wide uppercase font-sans">Grades</p>
+              </Link>
+            </div>
+          </section>
         </div>
-      </header>
-
-      <main className="max-w-5xl mx-auto px-6 py-10 grid gap-8 md:grid-cols-2">
-        <section className="bg-white border border-border rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="font-display text-xl text-ink">Recent Homework</h2>
-            <Link href="/student/homework" className="text-sm text-warm-600 hover:text-warm-700 transition-colors">View all &rarr;</Link>
-          </div>
-          {recentHomework.length === 0 ? (
-            <p className="text-ink/30 text-sm">No homework yet.</p>
-          ) : (
-            <ul className="divide-y divide-border">
-              {recentHomework.map((hw) => (
-                <li key={hw.id} className="py-2.5">
-                  <p className="text-sm font-medium text-ink/80">{hw.title}</p>
-                  {hw.due_date && <p className="text-xs text-ink/30 mt-0.5">Due: {new Date(hw.due_date).toLocaleDateString()}</p>}
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-
-        <section className="bg-white border border-border rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="font-display text-xl text-ink">Announcements</h2>
-            <Link href="/student/announcements" className="text-sm text-warm-600 hover:text-warm-700 transition-colors">View all &rarr;</Link>
-          </div>
-          {recentAnnouncements.length === 0 ? (
-            <p className="text-ink/30 text-sm">No announcements yet.</p>
-          ) : (
-            <ul className="divide-y divide-border">
-              {recentAnnouncements.map((ann) => (
-                <li key={ann.id} className="py-2.5">
-                  <p className="text-sm font-medium text-ink/80">{ann.title}</p>
-                  <p className="text-xs text-ink/30 mt-0.5 line-clamp-1">{ann.body}</p>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-
-        <section className="md:col-span-2 grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <Link href="/student/homework" className="bg-white border border-border rounded-xl p-4 hover:border-warm-400 hover:shadow-sm transition-all"><p className="text-2xl mb-1">📝</p><p className="text-sm font-medium text-ink/80">Homework</p></Link>
-          <Link href="/student/announcements" className="bg-white border border-border rounded-xl p-4 hover:border-warm-400 hover:shadow-sm transition-all"><p className="text-2xl mb-1">📢</p><p className="text-sm font-medium text-ink/80">Announcements</p></Link>
-          <Link href="/student/surveys" className="bg-white border border-border rounded-xl p-4 hover:border-warm-400 hover:shadow-sm transition-all"><p className="text-2xl mb-1">📊</p><p className="text-sm font-medium text-ink/80">Surveys</p></Link>
-          <Link href="/student/messages" className="bg-white border border-border rounded-xl p-4 hover:border-warm-400 hover:shadow-sm transition-all"><p className="text-2xl mb-1">💬</p><p className="text-sm font-medium text-ink/80">Messages</p></Link>
-          <Link href="/student/exams" className="bg-white border border-border rounded-xl p-4 hover:border-warm-400 hover:shadow-sm transition-all"><p className="text-2xl mb-1">📝</p><p className="text-sm font-medium text-ink/80">Exams</p></Link>
-          <Link href="/student/attendance" className="bg-white border border-border rounded-xl p-4 hover:border-warm-400 hover:shadow-sm transition-all"><p className="text-2xl mb-1">📋</p><p className="text-sm font-medium text-ink/80">Attendance</p></Link>
-          <Link href="/student/grades" className="bg-white border border-border rounded-xl p-4 hover:border-warm-400 hover:shadow-sm transition-all"><p className="text-2xl mb-1">🏆</p><p className="text-sm font-medium text-ink/80">Grades</p></Link>
-        </section>
       </main>
 
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2 flex items-center justify-around z-50">
-        <Link href="/student/homework" className="flex flex-col items-center gap-0.5 text-[9px] text-gray-500 hover:text-black transition-colors py-1"><span className="text-sm">📝</span>HW</Link>
-        <Link href="/student/announcements" className="flex flex-col items-center gap-0.5 text-[9px] text-gray-500 hover:text-black transition-colors py-1"><span className="text-sm">📢</span>News</Link>
-        <Link href="/student/surveys" className="flex flex-col items-center gap-0.5 text-[9px] text-gray-500 hover:text-black transition-colors py-1"><span className="text-sm">📊</span>Survey</Link>
-        <Link href="/student/messages" className="flex flex-col items-center gap-0.5 text-[9px] text-gray-500 hover:text-black transition-colors py-1"><span className="text-sm">💬</span>Msg</Link>
+      {/* Mobile Sticky bottom menu for quick access */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-primary border-t border-primary-dark/50 px-4 py-2 flex items-center justify-around z-50 shadow-lg">
+        <Link href="/student/homework" className="flex flex-col items-center gap-0.5 text-[9px] text-paper/70 hover:text-white transition-colors py-1">
+          <span className="text-sm">📝</span> Homework
+        </Link>
+        <Link href="/student/announcements" className="flex flex-col items-center gap-0.5 text-[9px] text-paper/70 hover:text-white transition-colors py-1">
+          <span className="text-sm">📢</span> News
+        </Link>
+        <Link href="/student/surveys" className="flex flex-col items-center gap-0.5 text-[9px] text-paper/70 hover:text-white transition-colors py-1">
+          <span className="text-sm">📊</span> Surveys
+        </Link>
+        <Link href="/student/messages" className="flex flex-col items-center gap-0.5 text-[9px] text-paper/70 hover:text-white transition-colors py-1">
+          <span className="text-sm">💬</span> Messages
+        </Link>
       </nav>
-    </div>
+    </>
   );
 }

@@ -29,6 +29,24 @@ export const surveySchema = z.object({
   closes_at: z.string().optional(),
 });
 
+export const examQuestionSchema = z.object({
+  id: z.string(),
+  type: z.enum(["multiple_choice", "essay"]),
+  text: z.string().min(1, "Question text is required"),
+  image_url: z.string().nullable(),
+  options: z.array(z.string()),
+  correct: z.number().int().min(0).default(0),
+  points: z.number().int().min(1).default(1),
+});
+
+export const examSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  questions: z.array(examQuestionSchema).min(1, "At least one question is required"),
+  time_limit_minutes: z.number().int().positive().nullable().optional(),
+  visible_from: z.string().optional(),
+  closes_at: z.string().nullable().optional(),
+});
+
 export const textSubmissionSchema = z.object({
   homework_id: z.string().uuid(),
   text_content: z.string().min(1, "Content is required"),

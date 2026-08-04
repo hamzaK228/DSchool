@@ -1,3 +1,6 @@
+import PortalHeader from "@/components/PortalHeader";
+import PortalFooter from "@/components/PortalFooter";
+
 export const dynamic = "force-dynamic";
 
 export default function TeacherLayout({
@@ -5,5 +8,11 @@ export default function TeacherLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <div className="min-h-screen bg-paper flex flex-col justify-between">
+      <PortalHeader />
+      <div className="flex-1 pb-16 md:pb-0">{children}</div>
+      <PortalFooter />
+    </div>
+  );
 }
