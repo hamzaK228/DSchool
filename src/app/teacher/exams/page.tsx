@@ -245,6 +245,7 @@ export default function TeacherExams() {
         if (data.questions && Array.isArray(data.questions)) {
           setQuestions(data.questions.map((q: any) => ({ ...q, id: (q.id || nextId()) })));
         }
+        setShowForm(true);
       }
     } catch {}
     setAiLoading(false);

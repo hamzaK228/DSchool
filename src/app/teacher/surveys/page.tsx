@@ -75,6 +75,7 @@ export default function TeacherSurveys() {
         const data = await res.json();
         setForm({ question: data.question || "", closes_at: data.closes_at ? data.closes_at.slice(0, 16) : "" });
         setOptions(data.options || ["", ""]);
+        setShowForm(true);
         setError("");
       }
     } catch { setError("AI generation failed"); }

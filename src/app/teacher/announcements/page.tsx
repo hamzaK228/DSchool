@@ -75,6 +75,7 @@ export default function TeacherAnnouncements() {
       if (res.ok) {
         const data = await res.json();
         setForm({ title: data.title || "", body: data.body || "" });
+        setShowForm(true);
         setError("");
       }
     } catch { setError("AI generation failed"); }

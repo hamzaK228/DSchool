@@ -225,9 +225,23 @@ export default function TeacherMessages() {
                                   : "bg-white border border-border rounded-bl-md"
                               }`}
                             >
-                              <p className="whitespace-pre-wrap break-words">
-                                {msg.body}
-                              </p>
+                              {msg.body && <p className="whitespace-pre-wrap break-words">{msg.body}</p>}
+                              {(msg as any).file_url && (
+                                <div className="mt-1">
+                                  {((msg as any).file_url || "").match(/\.(jpg|jpeg|png|gif|webp|svg)$/i) ? (
+                                    <img src={(msg as any).file_url} alt="attachment" className="max-w-full max-h-48 rounded-lg" />
+                                  ) : (
+                                    <a
+                                      href={(msg as any).file_url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className={`text-xs underline ${isMine ? "text-paper/70" : "text-warm-600"}`}
+                                    >
+                                      📎 Open attachment
+                                    </a>
+                                  )}
+                                </div>
+                              )}
                             </div>
                             <p
                               className={`text-[10px] mt-1 px-1 ${
